@@ -2,87 +2,43 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RoDiscover</title>
+<title>Roblox Toolbox</title>
 
 <style>
 body {
     margin: 0;
-    background: #0e0e10;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
     color: white;
+    text-align: center;
 }
 
 .header {
-    padding: 16px;
-    background: #16161a;
-    display: flex;
-    gap: 10px;
-    position: sticky;
-    top: 0;
+    padding: 25px;
+    background: #111;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-input {
-    flex: 1;
-    padding: 12px;
-    border-radius: 12px;
-    border: none;
-    background: #232329;
-    color: white;
-    font-size: 16px;
+.container {
+    padding: 40px 20px;
 }
 
-button {
-    padding: 12px 16px;
+.button {
+    display: block;
+    margin: 15px auto;
+    padding: 15px;
+    width: 80%;
+    max-width: 300px;
     border-radius: 12px;
-    border: none;
     background: #22c55e;
     color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.sort {
-    padding: 10px 16px;
-    font-size: 14px;
-    color: #aaa;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 12px;
-    padding: 16px;
-}
-
-.card {
-    background: #18181c;
-    border-radius: 14px;
-    overflow: hidden;
-    transition: transform 0.2s ease;
-}
-
-.card:hover {
-    transform: scale(1.03);
-}
-
-.card img {
-    width: 100%;
-    height: 140px;
-    object-fit: cover;
-}
-
-.info {
-    padding: 10px;
-}
-
-.title {
-    font-size: 14px;
+    text-decoration: none;
     font-weight: bold;
 }
 
-.players {
-    font-size: 13px;
-    color: #22c55e;
+.button:hover {
+    background: #16a34a;
 }
 </style>
 </head>
@@ -90,77 +46,14 @@ button {
 <body>
 
 <div class="header">
-    <input type="text" id="search" placeholder="Search games...">
-    <button onclick="searchGames()">Search</button>
+    Roblox Toolbox
 </div>
 
-<div class="sort">
-    Sort: <button onclick="sortByPlayers()">Popularity</button>
+<div class="container">
+    <a class="button" href="roblox-toolbox-userlookup.base44.app">User Lookup (vpn needed for iran)</a>
+    <a class="button" href="games.html">Game Lookup</a>
+    <a class="button" href="scripts.html">Scripts Page</a>
 </div>
-
-<div class="grid" id="gameGrid"></div>
-
-<script>
-let games = [
-    {
-        name: "Grow a Garden",
-        players: 124532,
-        image: "https://tr.rbxcdn.com/180DAY-315d3c77bbf34ad8b90f4eac3b9d85fa/512/512/Image/Webp/noFilter"
-    },
-    {
-        name: "Blade Ball",
-        players: 98213,
-        image: "https://tr.rbxcdn.com/180DAY-0b2b1d5c9b8a4d30a47a1a46e39c57f6/512/512/Image/Webp/noFilter"
-    },
-    {
-        name: "Brookhaven 🏡RP",
-        players: 312445,
-        image: "https://tr.rbxcdn.com/180DAY-4e2c8f70bb9348fbb2a4c67d3e9fa2cd/512/512/Image/Webp/noFilter"
-    },
-    {
-        name: "Blox Fruits",
-        players: 421532,
-        image: "https://tr.rbxcdn.com/180DAY-7f4fda2a7f0b4f0c9c6e87e8f35d6d60/512/512/Image/Webp/noFilter"
-    }
-];
-
-function renderGames(list) {
-    const grid = document.getElementById("gameGrid");
-    grid.innerHTML = "";
-
-    list.forEach(game => {
-        const card = document.createElement("div");
-        card.className = "card";
-
-        card.innerHTML = `
-            <img src="${game.image}">
-            <div class="info">
-                <div class="title">${game.name}</div>
-                <div class="players">👥 ${game.players.toLocaleString()} playing</div>
-            </div>
-        `;
-
-        grid.appendChild(card);
-    });
-}
-
-function searchGames() {
-    const query = document.getElementById("search").value.toLowerCase();
-
-    const filtered = games.filter(g =>
-        g.name.toLowerCase().includes(query)
-    );
-
-    renderGames(filtered);
-}
-
-function sortByPlayers() {
-    games.sort((a,b) => b.players - a.players);
-    renderGames(games);
-}
-
-renderGames(games);
-</script>
 
 </body>
 </html>
