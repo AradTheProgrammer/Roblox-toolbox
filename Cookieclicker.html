@@ -1,1 +1,128 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Empire Ultimate Offline</title>
+<style>
+body { background: #111; color: white; font-family: Arial; text-align: center; margin: 0; }
+button { padding: 10px; margin: 5px; border-radius: 8px; border: none; cursor: pointer; }
+#cookieBtn { font-size: 50px; width: 120px; height: 120px; border-radius: 50%; margin: 20px auto; }
+#stats, #panels { margin: 10px; }
+</style>
+</head>
+<body>
+<h1>🍪 Cookie Empire Ultimate (Offline)</h1>
+<div id="stats"></div>
+<button id="cookieBtn">🍪 Click</button>
+<div id="panels"></div>
+
+<script>
+/* ----------------- Game Data ----------------- */
+const Game = {
+    cookies: 0,
+    gems: 0,
+    factories: 0,
+    superFactories: 0,
+    prestige: 0,
+    skillPoints: 0,
+    bossHP: 100,
+    achievements: [],
+    crates: [],
+    skins: [],
+    stats() {
+        document.getElementById('stats').innerHTML =
+            `Cookies: ${Math.floor(this.cookies)} | Gems: ${this.gems} | Prestige: ${this.prestige} | Skill Points: ${this.skillPoints} | Boss HP: ${this.bossHP}`;
+    },
+    save() { localStorage.setItem('cookieEmpireOffline', JSON.stringify(this)); },
+    load() { const data = JSON.parse(localStorage.getItem('cookieEmpireOffline')); if(data) Object.assign(this, data); }
+};
+
+Game.load();
+Game.stats();
+
+/* ----------------- Core Click ----------------- */
+document.getElementById('cookieBtn').addEventListener('click', () => {
+    Game.cookies += 1 + Game.prestige;
+    Game.stats();
+    Game.save();
+});
+
+/* ----------------- Idle Production ----------------- */
+setInterval(() => {
+    Game.cookies += Game.factories + Game.superFactories * 10;
+    Game.stats();
+    Game.save();
+}, 1000);
+
+/* ----------------- Prestige ----------------- */
+function prestige() {
+    Game.prestige += Math.floor(Game.cookies/1000);
+    Game.cookies = 0;
+    Game.factories = 0;
+    Game.superFactories = 0;
+    Game.skillPoints += Game.prestige;
+    Game.stats();
+    Game.save();
+}
+
+/* ----------------- Skill Tree ----------------- */
+function upgradeSkill(type) {
+    if(Game.skillPoints <= 0) return;
+    switch(type){
+        case 'click': Game.prestige += 0.1; break;
+        case 'factory': Game.factories += 1; break;
+        case 'boss': Game.bossHP += 50; break;
+    }
+    Game.skillPoints -= 1;
+    Game.stats();
+    Game.save();
+}
+
+/* ----------------- Boss Fight ----------------- */
+function attackBoss() {
+    Game.bossHP -= 1 + Game.factories;
+    if(Game.bossHP <= 0){
+        Game.cookies += 100;
+        Game.gems += 1;
+        Game.bossHP = 100 + Game.prestige*10;
+    }
+    Game.stats();
+    Game.save();
+}
+setInterval(() => { attackBoss(); }, 5000);
+
+/* ----------------- Crates ----------------- */
+function openCrate(){
+    const reward = Math.floor(Math.random()*50);
+    Game.cookies += reward;
+    Game.gems += (Math.random()<0.2)?1:0;
+    Game.stats();
+    Game.save();
+}
+
+/* ----------------- PvP AI ----------------- */
+function battleAI(){
+    const outcome = Math.random();
+    if(outcome<0.5){
+        Game.cookies += 50;
+        Game.gems += 1;
+    } else {
+        Game.cookies += 10;
+    }
+    Game.stats();
+    Game.save();
+}
+
+/* ----------------- Achievements ----------------- */
+setInterval(()=>{
+    if(Game.cookies >= 100 && !Game.achievements.includes('100 Cookies')) Game.achievements.push('100 Cookies');
+},1000);
+
+/* ----------------- Auto Save ----------------- */
+setInterval(()=>{Game.save();},5000);
+
+</script>
+</body>
+</html>
